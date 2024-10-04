@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:async';
 import 'dart:math';
 
-// ANSI escape codes for colors
 const colors = [
   '\x1B[32m', // Green
   '\x1B[37m', // White
@@ -13,7 +12,6 @@ const colors = [
 ];
 const resetColor = '\x1B[0m';
 
-// Explosion shapes for the fireworks
 const explosionShapes = ['star', 'heart', 'circle'];
 
 void main() async {
@@ -22,7 +20,7 @@ void main() async {
 
   await runFireworks(fireworkCount);
   await animateHBD();
-  stdout.write(resetColor); // Reset color after animation
+  stdout.write(resetColor);  
 }
 
 Future<void> runFireworks(int count) async {
@@ -36,23 +34,18 @@ Future<void> runFireworks(int count) async {
     final fireworkX = i == 0 ? width ~/ 2 : random.nextInt(width);
     final fireworkY = height - 1;
 
-    // Set the same random background color for the firework and explosion
     final backgroundColor = colors[random.nextInt(colors.length)];
-    stdout.write('\x1B[48;5;${backgroundColor.substring(2)}m'); // Set background color
+    stdout.write('\x1B[48;5;${backgroundColor.substring(2)}m'); 
 
-    // Choose firework color
     String fireworkColor = (i == 0) ? colors[0] : backgroundColor;
 
-    // Animate the firework and explosion
     await animateFirework(fireworkX, fireworkY, fireworkColor);
     await animateExplosion(fireworkX, 0, explosionShapes[random.nextInt(explosionShapes.length)],
         fireworkColor);
 
-    // Delay between fireworks
     await Future.delayed(Duration(seconds: random.nextInt(2) + 1));
   }
 
-  // Reset the color after all fireworks
   stdout.write(resetColor); 
 }
 
@@ -60,12 +53,11 @@ Future<void> animateFirework(int x, int startY, String color) async {
   for (int i = startY; i >= 0; i--) {
     stdout.write('\x1B[2J\x1B[0;0H');
     
-    // Print empty lines for the height
     for (int j = 0; j < i; j++) {
       stdout.writeln();
     }
     
-    stdout.writeln(' ' * x + '${color}*${resetColor}'); // Firework '*'
+    stdout.writeln(' ' * x + '${color}*${resetColor}'); 
     await Future.delayed(Duration(milliseconds: 50));
   }
 }
@@ -132,7 +124,6 @@ Future<void> animateHBD() async {
   final width = 120;
   final height = 40;
 
-  // Big "HBD PAK ARNOLD" message animation
   final bigMessage = [
     "HHHHH  BBBBB   DDDDD    PPPPP   AAAAA  K   K     AAAAA  RRRRR  N   N  OOOOO  L     DDDDD ",
     "H   H  B    B  D    D   P    P  A   A  K  K      A   A  R    R  NN  N  O   O  L     D    D",
@@ -141,7 +132,6 @@ Future<void> animateHBD() async {
     "H   H  BBBBB   DDDDD    P       A   A  K   K     A   A  R    R  N   N  OOOOO  LLLLL DDDDD "
   ];
 
-  // Animate the big message moving from bottom to middle
   for (int i = 0; i < bigMessage.length; i++) {
     stdout.write('\x1B[2J\x1B[0;0H');
     int verticalOffset = (height ~/ 2) - (bigMessage.length ~/ 2) + i;
